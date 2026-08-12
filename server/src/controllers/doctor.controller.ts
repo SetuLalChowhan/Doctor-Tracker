@@ -82,10 +82,65 @@ export const getDoctors = catchAsync(async (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/v1/doctors/meta/options
+ * Returns distinct specializations and hospitals available in the database
+ */
+export const getDoctorMetaOptions = catchAsync(
+  async (_req: Request, res: Response) => {
+    const [dbSpecializations, dbHospitals] = await Promise.all([
+      Doctor.distinct("specialization"),
+      Doctor.distinct("hospital"),
+    ]);
+
+    const defaultSpecializations = [
+      "Cardiology",
+      "Neurology",
+      "Pediatrics",
+      "Orthopedics",
+      "General Medicine",
+      "Dermatology",
+      "Oncology",
+      "Psychiatry",
+    ];
+
+    const defaultHospitals = [
+      "Metro Health Hospital",
+      "St. Jude Medical Center",
+      "City Children's Hospital",
+      "General Memorial Hospital",
+    ];
+
+    // Merge and deduplicate
+    const specializations = Array.from(
+      new Set([...defaultSpecializations, ...dbSpecializations.filter(Boolean)])
+    ).sort();
+    const hospitals = Array.from(
+      new Set([...defaultHospitals, ...dbHospitals.filter(Boolean)])
+    ).sort();
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        specializations,
+        hospitals,
+      },
+    });
+  }
+);
+
+/**
  * POST /api/v1/doctors
  * Create a new doctor
  */
-export const createDoctor = catchAsync(async (req: Request, res: Response) => {
+export const createDoctor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const { email } = req.body;
+  if (email) {
+    const existing = await Doctor.findOne({ email: email.toLowerCase().trim() });
+    if (existing) {
+      return next(new AppError("A doctor with this email address already exists.", 400));
+    }
+  }
+
   const doctor = await Doctor.create(req.body);
   res.status(201).json({
     status: "success",

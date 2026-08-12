@@ -25,9 +25,9 @@ export default function Pagination({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 px-1 border-t border-slate-200">
       <div className="text-xs text-slate-500 font-medium">
-        Showing <span className="font-bold text-slate-900">{startRecord}</span> to{" "}
-        <span className="font-bold text-slate-900">{endRecord}</span> of{" "}
-        <span className="font-bold text-slate-900">{total}</span> records
+        Showing <span className="font-extrabold text-sky-600">{startRecord}</span> to{" "}
+        <span className="font-extrabold text-sky-600">{endRecord}</span> of{" "}
+        <span className="font-extrabold text-sky-600">{total}</span> records
       </div>
 
       <div className="flex items-center gap-2">
@@ -42,8 +42,9 @@ export default function Pagination({
           <span>Previous</span>
         </Button>
 
-        <div className="text-xs font-semibold text-slate-700 px-2">
-          Page {page} of {totalPages}
+        <div className="text-xs font-semibold text-slate-600 px-2">
+          Page <span className="font-extrabold text-sky-600">{page}</span> of{" "}
+          <span className="font-extrabold text-sky-600">{totalPages}</span>
         </div>
 
         <Button

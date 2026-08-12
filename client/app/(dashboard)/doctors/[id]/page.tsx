@@ -23,9 +23,20 @@ export default function DoctorPatientsPage({
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [localSearch, setLocalSearch] = useState("");
   const [conditionFilter, setConditionFilter] = useState("");
   const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
   const [deletingPatientId, setDeletingPatientId] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localSearch !== search) {
+        setSearch(localSearch);
+        setPage(1);
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, search]);
 
   const {
     doctor,
@@ -100,7 +111,7 @@ export default function DoctorPatientsPage({
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Users className="h-5 w-5 text-[#038AF9]" /> Patient List
+            <Users className="h-4 w-4 text-sky-600" /> Assigned Patient Roster
           </h2>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -109,12 +120,9 @@ export default function DoctorPatientsPage({
               <input
                 type="text"
                 placeholder="Search patient name or condition..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPage(1);
-                }}
-                className="w-full rounded-lg border border-slate-200 bg-white pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-[#038AF9] focus:outline-none"
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                className="w-full h-11 rounded-xl border border-slate-300 bg-white pl-9 pr-3 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none"
               />
             </div>
 
@@ -126,7 +134,7 @@ export default function DoctorPatientsPage({
                 setConditionFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-36 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-[#038AF9] focus:outline-none"
+              className="w-36 h-11 rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none"
             />
           </div>
         </div>

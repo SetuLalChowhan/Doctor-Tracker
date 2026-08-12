@@ -64,6 +64,7 @@ export const useDoctors = (queryParams?: DoctorsQueryParams) => {
     onSuccess: () => {
       toast.success("Doctor created successfully!");
       queryClient.invalidateQueries({ queryKey: ["doctors"] });
+      queryClient.invalidateQueries({ queryKey: ["doctorOptions"] });
       queryClient.invalidateQueries({ queryKey: ["dashboardStats"] });
     },
     onError: (error: any) => {
@@ -191,6 +192,22 @@ export const useDoctorDetails = (doctorId: string, params?: DoctorPatientsQueryP
     deletePatient: deletePatientMutation.mutate,
     isDeletingPatient: deletePatientMutation.isPending,
   };
+};
+
+export const useDoctorOptions = () => {
+  const axiosSecure = useAxiosSecure();
+
+  return useQuery({
+    queryKey: ["doctorOptions"],
+    queryFn: async () => {
+      const response = await axiosSecure.get("/doctors/meta/options");
+      return response.data?.data as {
+        specializations: string[];
+        hospitals: string[];
+      };
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 };
 
 export default useDoctors;

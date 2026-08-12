@@ -53,6 +53,18 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {/* Clinical Dashboard Title Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Clinical Overview & Metrics
+          </h1>
+          <p className="text-xs text-slate-600 font-medium mt-1.5">
+            Real-time physician workload, patient enrollments, and condition statistics
+          </p>
+        </div>
+      </div>
+
       {/* Metric Cards Row */}
       <MetricCards
         totalDoctors={totalDoctors}

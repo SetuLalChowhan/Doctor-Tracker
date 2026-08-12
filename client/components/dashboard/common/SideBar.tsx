@@ -74,10 +74,15 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
             onClick={() => setOpen(false)}
             className="flex items-center gap-3 font-bold text-lg text-white tracking-tight"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#038AF9] text-white shadow-md">
-              <Activity className="h-5 w-5 stroke-[2.5]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-600 text-white">
+              <Activity className="h-4 w-4" />
             </div>
-            <span className="font-semibold text-base">Doctor Tracker</span>
+            <div className="flex flex-col gap-1.5">
+              <span className="font-bold text-sm leading-none text-white">Doctor Tracker</span>
+              <span className="text-[10px] font-medium text-slate-400 leading-none">
+                Clinical Administration
+              </span>
+            </div>
           </Link>
           <Button
             variant="ghost"

@@ -19,15 +19,47 @@ interface WorkloadChartProps {
   }>;
 }
 
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const item = payload[0].payload;
+    return (
+      <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-md text-xs space-y-1">
+        <p className="font-bold text-slate-900 flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-sky-600" />
+          {item.name}
+        </p>
+        {item.specialization && (
+          <p className="text-slate-600 font-medium">{item.specialization}</p>
+        )}
+        <div className="pt-1 text-sky-700 font-bold flex items-center gap-1">
+          <span>{item.patients} Active Patients</span>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const formatXAxisName = (fullName: string) => {
+  if (!fullName) return "";
+  const parts = fullName.replace(/^Dr\.\s*/i, "").trim().split(" ");
+  if (parts.length >= 2) {
+    return `Dr. ${parts[parts.length - 1]}`;
+  }
+  return fullName.length > 10 ? `${fullName.slice(0, 9)}…` : fullName;
+};
+
 export default function WorkloadChart({ data }: WorkloadChartProps) {
+  const minWidth = Math.max(500, data.length * 50);
+
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <div className="space-y-0.5">
-          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-[#038AF9]" /> Workload per Doctor
+    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-2xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div className="space-y-1">
+          <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-sky-600" /> Workload Distribution per Doctor
           </h2>
-          <p className="text-xs text-slate-500">Patient count distribution across active doctors</p>
+          <p className="text-xs text-slate-600">Patient allocation across active clinical staff</p>
         </div>
       </div>
 
@@ -37,33 +69,41 @@ export default function WorkloadChart({ data }: WorkloadChartProps) {
           description="Doctor patient statistics will appear here automatically."
         />
       ) : (
-        <div className="h-72 w-full pt-4">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 25 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis
-                dataKey="name"
-                tick={{ fontSize: 11, fill: "#64748b" }}
-                interval={0}
-                angle={-20}
-                textAnchor="end"
-              />
-              <YAxis tick={{ fontSize: 11, fill: "#64748b" }} allowDecimals={false} />
-              <Tooltip
-                cursor={{ fill: "rgba(3, 138, 249, 0.05)" }}
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e2e8f0",
-                  borderRadius: "10px",
-                  fontSize: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                }}
-              />
-              <Bar dataKey="patients" fill="#038AF9" radius={[6, 6, 0, 0]} barSize={28} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="w-full overflow-x-auto">
+          <div className="h-72 pt-2" style={{ minWidth: data.length > 6 ? `${minWidth}px` : "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 45 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis
+                  dataKey="name"
+                  tickLine={false}
+                  axisLine={{ stroke: "#cbd5e1" }}
+                  tick={{ fontSize: 10, fill: "#475569", fontWeight: 600 }}
+                  tickFormatter={formatXAxisName}
+                  interval={0}
+                  angle={-30}
+                  textAnchor="end"
+                  height={50}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fontSize: 11, fill: "#64748b" }}
+                  allowDecimals={false}
+                />
+                <Tooltip cursor={{ fill: "rgba(241, 245, 249, 0.7)" }} content={<CustomTooltip />} />
+                <Bar
+                  dataKey="patients"
+                  fill="#0284c7"
+                  radius={[4, 4, 0, 0]}
+                  barSize={Math.min(32, Math.max(16, 400 / (data.length || 1)))}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       )}
     </div>
   );
 }
+

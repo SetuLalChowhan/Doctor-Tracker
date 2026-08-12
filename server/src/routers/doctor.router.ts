@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getDoctors,
+  getDoctorMetaOptions,
   createDoctor,
   getDoctorById,
   updateDoctor,
@@ -20,6 +21,8 @@ import { createPatientSchema } from "../validations/patient.validation.js";
 const router = Router();
 
 router.use(protect);
+
+router.get("/meta/options", getDoctorMetaOptions);
 
 router
   .route("/")

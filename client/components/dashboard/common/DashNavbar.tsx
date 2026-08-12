@@ -71,7 +71,7 @@ const DashNavbar: React.FC<DashNavbarProps> = ({ open, setOpen }) => {
                   {getInitials(user?.name)}
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden sm:flex flex-col items-start text-left">
+              <div className="hidden sm:flex flex-col items-start text-left gap-1">
                 <span className="text-xs font-bold text-slate-900 leading-tight">
                   {user?.name || "System Admin"}
                 </span>
@@ -82,7 +82,7 @@ const DashNavbar: React.FC<DashNavbarProps> = ({ open, setOpen }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 p-1 bg-white border border-slate-200 shadow-lg rounded-xl">
-            <DropdownMenuLabel className="p-3 flex flex-col gap-0.5">
+            <DropdownMenuLabel className="p-3 flex flex-col gap-1.5">
               <span className="font-bold text-sm text-slate-900 leading-none">
                 {user?.name || "System Admin"}
               </span>
