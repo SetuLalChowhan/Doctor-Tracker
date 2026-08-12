@@ -7,13 +7,13 @@ try {
 } catch { }
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
   try {
     const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/doctorTracker";
     await mongoose.connect(mongoUri);
     console.log("MongoDB Connected 🍃");
   } catch (error: any) {
     console.error("DB Error:", error?.message || error);
-    process.exit(1);
   }
 };
 
