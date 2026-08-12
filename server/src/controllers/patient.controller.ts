@@ -12,7 +12,7 @@ export const getPatients = catchAsync(async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string) || 10;
   const skip = (page - 1) * limit;
 
-  const { search, condition, doctorId, startDate, endDate } = req.query;
+  const { search, condition, doctorId, gender, startDate, endDate } = req.query;
 
   const queryFilter: any = {};
 
@@ -32,6 +32,10 @@ export const getPatients = catchAsync(async (req: Request, res: Response) => {
 
   if (doctorId) {
     queryFilter.doctorId = doctorId;
+  }
+
+  if (gender) {
+    queryFilter.gender = gender;
   }
 
   if (startDate || endDate) {

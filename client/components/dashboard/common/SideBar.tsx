@@ -45,7 +45,9 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
   const isActive = (paths?: string[] | string) => {
     if (!paths) return false;
     const pathArray = Array.isArray(paths) ? paths : [paths];
-    return pathArray.some((path) => pathname === path || pathname.startsWith(path + "/"));
+    return pathArray.some(
+      (path) => pathname === path || pathname.startsWith(path + "/"),
+    );
   };
 
   const toggleGroup = (id: number) => {
@@ -57,7 +59,9 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
       <div
         className={cn(
           "fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 xl:hidden",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         )}
         onClick={() => setOpen(false)}
       />
@@ -65,7 +69,7 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-slate-900 text-slate-100 transition-transform duration-300 ease-in-out xl:static xl:translate-x-0",
-          open ? "translate-x-0" : "-translate-x-full"
+          open ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-16 items-center justify-between px-5 border-b border-slate-800">
@@ -78,8 +82,10 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
               <Activity className="h-4 w-4" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="font-bold text-sm leading-none text-white">Doctor Tracker</span>
-              <span className="text-[10px] font-medium text-slate-400 leading-none">
+              <span className="font-bold text-sm leading-none text-white">
+                Doctor Tracker
+              </span>
+              <span className="text-[12px] mt-1 font-medium text-slate-400 leading-none">
                 Clinical Administration
               </span>
             </div>
@@ -101,7 +107,8 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
               const isGroupOpen = !!openGroups[item.id];
               const active =
                 isActive(item.activePaths || item.path) ||
-                (hasSublinks && item.sublink!.some((sub) => pathname === sub.path));
+                (hasSublinks &&
+                  item.sublink!.some((sub) => pathname === sub.path));
 
               if (hasSublinks) {
                 return (
@@ -112,12 +119,17 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
                         "w-full flex items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors cursor-pointer text-left",
                         active
                           ? "bg-[#038AF9]/15 text-[#038AF9] font-semibold"
-                          : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                          : "text-slate-300 hover:bg-slate-800 hover:text-white",
                       )}
                     >
                       <div className="flex items-center gap-3">
                         {item.icon && (
-                          <span className={cn("shrink-0", active ? "text-[#038AF9]" : "text-slate-400")}>
+                          <span
+                            className={cn(
+                              "shrink-0",
+                              active ? "text-[#038AF9]" : "text-slate-400",
+                            )}
+                          >
                             {item.icon}
                           </span>
                         )}
@@ -126,7 +138,7 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
                       <ChevronDown
                         className={cn(
                           "h-4 w-4 shrink-0 transition-transform duration-200 text-slate-400",
-                          isGroupOpen && "rotate-180"
+                          isGroupOpen && "rotate-180",
                         )}
                       />
                     </button>
@@ -134,7 +146,9 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
                     <div
                       className={cn(
                         "overflow-hidden transition-all duration-200 pl-9 pr-2 space-y-1",
-                        isGroupOpen ? "max-h-40 opacity-100 py-1" : "max-h-0 opacity-0 py-0"
+                        isGroupOpen
+                          ? "max-h-40 opacity-100 py-1"
+                          : "max-h-0 opacity-0 py-0",
                       )}
                     >
                       {item.sublink!.map((sub) => {
@@ -148,7 +162,7 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
                               "block rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
                               subActive
                                 ? "bg-[#038AF9] text-white font-bold"
-                                : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                                : "text-slate-400 hover:bg-slate-800 hover:text-white",
                             )}
                           >
                             {sub.text}
@@ -169,11 +183,16 @@ const SideBar: React.FC<SideBarProps> = ({ sidebar, open, setOpen }) => {
                       "flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors",
                       active
                         ? "bg-[#038AF9] text-white shadow-sm font-semibold"
-                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white",
                     )}
                   >
                     {item.icon && (
-                      <span className={cn("shrink-0", active ? "text-white" : "text-slate-400")}>
+                      <span
+                        className={cn(
+                          "shrink-0",
+                          active ? "text-white" : "text-slate-400",
+                        )}
+                      >
                         {item.icon}
                       </span>
                     )}

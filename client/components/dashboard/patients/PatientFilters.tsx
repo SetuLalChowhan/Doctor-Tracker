@@ -17,10 +17,11 @@ interface PatientFiltersProps {
   setSearch: (value: string) => void;
   condition: string;
   setCondition: (value: string) => void;
-  doctorId: string;
-  setDoctorId: (value: string) => void;
+  doctorId?: string;
+  setDoctorId?: (value: string) => void;
   gender: string;
   setGender: (value: string) => void;
+  showDoctorFilter?: boolean;
 }
 
 const PRESET_CONDITIONS = [
@@ -38,10 +39,11 @@ export default function PatientFilters({
   setSearch,
   condition,
   setCondition,
-  doctorId,
+  doctorId = "",
   setDoctorId,
   gender,
   setGender,
+  showDoctorFilter = true,
 }: PatientFiltersProps) {
   const { doctors } = useDoctors({ limit: 100 });
 
@@ -67,7 +69,7 @@ export default function PatientFilters({
     setLocalSearch("");
     setSearch("");
     setCondition("");
-    setDoctorId("");
+    setDoctorId?.("");
     setGender("");
   };
 
@@ -112,24 +114,26 @@ export default function PatientFilters({
         </div>
 
         {/* Doctor Filter */}
-        <div className="w-full sm:w-48">
-          <Select
-            value={doctorId || "all"}
-            onValueChange={(val) => setDoctorId(val === "all" ? "" : val)}
-          >
-            <SelectTrigger className="w-full h-11">
-              <SelectValue placeholder="All Doctors" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Doctors</SelectItem>
-              {doctors?.map((doc) => (
-                <SelectItem key={doc._id} value={doc._id}>
-                  {doc.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {showDoctorFilter && setDoctorId && (
+          <div className="w-full sm:w-48">
+            <Select
+              value={doctorId || "all"}
+              onValueChange={(val) => setDoctorId(val === "all" ? "" : val)}
+            >
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="All Doctors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Doctors</SelectItem>
+                {doctors?.map((doc) => (
+                  <SelectItem key={doc._id} value={doc._id}>
+                    {doc.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Gender Filter */}
         <div className="w-full sm:w-36">

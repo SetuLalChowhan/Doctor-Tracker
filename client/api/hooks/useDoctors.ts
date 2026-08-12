@@ -40,6 +40,7 @@ export interface DoctorPatientsQueryParams {
   limit?: number;
   search?: string;
   condition?: string;
+  gender?: string;
 }
 
 export const useDoctors = (queryParams?: DoctorsQueryParams) => {

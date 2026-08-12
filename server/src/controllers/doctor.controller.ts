@@ -235,7 +235,7 @@ export const getDoctorPatients = catchAsync(
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
 
-    const { search, condition } = req.query;
+    const { search, condition, gender } = req.query;
 
     const queryFilter: any = { doctorId: doctor._id };
 
@@ -251,6 +251,10 @@ export const getDoctorPatients = catchAsync(
 
     if (condition) {
       queryFilter.condition = new RegExp(condition as string, "i");
+    }
+
+    if (gender) {
+      queryFilter.gender = gender;
     }
 
     const [patients, total] = await Promise.all([

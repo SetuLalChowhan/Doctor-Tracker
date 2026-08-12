@@ -1,17 +1,11 @@
-import SiteLayout from '@/layouts/SiteLayout'
-import React from 'react'
-
+import React from "react";
 
 interface Props {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const layout = ({ children }: Props) => {
-    return (
-        <SiteLayout>
-            {children}
-        </SiteLayout>
-    )
-}
+  return <>{children}</>;
+};
 
-export default layout
+export default layout;
