@@ -4,15 +4,14 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import DashNavbar from "@/components/dashboard/common/DashNavbar";
 import SideBar, { type SidebarItem } from "@/components/dashboard/common/SideBar";
-import { LayoutDashboard, UserCog } from "lucide-react";
-import useUserProfile from "@/api/hooks/useUserProfile";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { LayoutDashboard, Stethoscope, Users } from "lucide-react";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  useUserProfile();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -26,32 +25,38 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       icon: <LayoutDashboard className="h-5 w-5" />,
       text: "Dashboard",
       path: "/dashboard",
-      activePaths: ["/dashboard", "/dashboard/settings", "/dashboard/analytics"],
+      activePaths: ["/dashboard"],
     },
     {
       id: 2,
-      icon: <UserCog className="h-5 w-5" />,
-      text: "Admin Management",
-      path: "/dashboard/admin-list",
-      sublink: [
-        { id: 1, text: "Admin List", path: "/dashboard/admin-list" },
-        { id: 2, text: "Add New Admin", path: "/dashboard/asdasd" },
-      ],
+      icon: <Stethoscope className="h-5 w-5" />,
+      text: "Doctors",
+      path: "/doctors",
+      activePaths: ["/doctors"],
+    },
+    {
+      id: 3,
+      icon: <Users className="h-5 w-5" />,
+      text: "Patients",
+      path: "/patients",
+      activePaths: ["/patients"],
     },
   ];
 
   return (
-    <div className="flex h-screen min-h-screen w-full bg-background text-foreground overflow-hidden">
-      <SideBar open={open} setOpen={setOpen} sidebar={sideBarItems} />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <DashNavbar open={open} setOpen={setOpen} />
-        <main className="flex-1 overflow-y-auto px-4 md:px-8 py-6 bg-muted/20">
-          <div className="w-full space-y-6">
-            {children}
-          </div>
-        </main>
+    <ProtectedRoute>
+      <div className="flex h-screen min-h-screen w-full bg-slate-50 text-slate-900 overflow-hidden">
+        <SideBar open={open} setOpen={setOpen} sidebar={sideBarItems} />
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <DashNavbar open={open} setOpen={setOpen} />
+          <main className="flex-1 overflow-y-auto py-6 section-padding-x bg-slate-50">
+            <div className="w-full space-y-6">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 
