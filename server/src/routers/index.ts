@@ -7,6 +7,10 @@ import dashboardRouter from "./dashboard.router.js";
 const apiRouter = Router();
 
 // Health check ping
+apiRouter.get("/", (_req, res) => {
+  res.json({ status: "success", message: "Doctor Tracker API v1 is active" });
+});
+
 apiRouter.get("/ping", (_req, res) => {
   res.json({ status: "ok", message: "pong" });
 });
