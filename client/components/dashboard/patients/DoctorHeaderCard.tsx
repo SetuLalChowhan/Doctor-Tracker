@@ -1,5 +1,5 @@
 import React from "react";
-import { Stethoscope, Building2, Phone, Mail, UserPlus, CheckCircle2 } from "lucide-react";
+import { Stethoscope, Building2, Phone, Mail, UserPlus, CheckCircle2, Users } from "lucide-react";
 import { DoctorItem } from "@/api/hooks/useDoctors";
 import { Button } from "@/components/ui/button";
 
@@ -56,13 +56,21 @@ export default function DoctorHeaderCard({
       {/* Action & Stats Container */}
       <div className="flex items-center gap-4 shrink-0 pt-3 xl:pt-0 border-t xl:border-t-0 border-slate-100 justify-between xl:justify-end">
         {/* Assigned Patients Stat Box */}
-        <div className="flex items-center gap-3 rounded-lg bg-slate-50 border border-slate-200 px-4 py-2 text-center">
-          <div>
-            <span className="block text-xl font-bold text-slate-900 leading-none">
-              {doctor.patientCount || 0}
-            </span>
-            <span className="text-[11px] text-slate-600 font-semibold tracking-tight">
-              Enrolled Patients
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 border border-slate-200 px-4 py-2.5 shadow-2xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-100/80 text-sky-700 font-semibold shrink-0">
+            <Users className="h-4.5 w-4.5" />
+          </div>
+          <div className="flex flex-col justify-center">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-xl font-bold text-slate-900 leading-none">
+                {doctor.patientCount || 0}
+              </span>
+              <span className="text-xs font-bold text-slate-700">
+                {doctor.patientCount === 1 ? "Patient" : "Patients"}
+              </span>
+            </div>
+            <span className="text-[11px] text-slate-500 font-medium tracking-tight">
+              Enrolled Roster
             </span>
           </div>
         </div>

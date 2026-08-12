@@ -166,11 +166,17 @@ High-resolution screenshots illustrating Desktop and Mobile user interfaces are 
 #### 3. Doctor Roster Directory (Desktop)
 ![Doctor Directory Desktop](screenshots/doctor-desktop.jpg)
 
-#### 4. Global Patient Roster (Desktop)
+#### 4. Add New Doctor Modal Window
+![Add Doctor Modal](screenshots/addDoctor.jpg)
+
+#### 5. Global Patient Roster (Desktop)
 ![Patient Directory Desktop](screenshots/patient-dekstop.jpg)
 
-#### 5. Patient Directory Filtered by Assigned Physician (Desktop)
+#### 6. Patient Directory Filtered by Assigned Physician (Desktop)
 ![Patient Under Doctor Desktop](screenshots/patient-under-doctor-desktop.jpg)
+
+#### 7. Add New Patient Modal Window
+![Add Patient Modal](screenshots/addPateint.jpg)
 
 ---
 
