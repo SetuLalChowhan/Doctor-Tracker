@@ -61,9 +61,8 @@ const patientSchema = new Schema<IPatient>(
   }
 );
 
-// Indexes for fast relational lookup, filtering by condition, and date-based analytics
+// Indexes for fast relational lookup and date-based analytics
 patientSchema.index({ doctorId: 1, createdAt: -1 });
-patientSchema.index({ condition: 1 });
 patientSchema.index({ createdAt: -1 });
 
 export const Patient = model<IPatient>("Patient", patientSchema);
