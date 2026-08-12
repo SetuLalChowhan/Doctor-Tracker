@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
+import dns from "dns";
 
-const connectDB = async (): Promise<void> => {
+// Fix Node.js SRV lookup failure (querySrv ECONNREFUSED) on Windows DNS
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch { }
+
+const connectDB = async () => {
   try {
-    const connString =
-      process.env.MONGODB_URI ||
-      process.env.DATABASE_URL ||
-      "mongodb://127.0.0.1:27017/doctorTracker";
-
-    const conn = await mongoose.connect(connString, {
-      serverSelectionTimeoutMS: 5000,
-    });
-    console.log(`MongoDB Connected: ${conn.connection.host} 🍃`);
+    const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/doctorTracker";
+    await mongoose.connect(mongoUri);
+    console.log("MongoDB Connected 🍃");
   } catch (error: any) {
-    console.error("MongoDB Connection Warning ⚠️:", error.message || error);
-    console.log("Server will continue running; health endpoint will reflect DB status.");
+    console.error("DB Error:", error?.message || error);
+    process.exit(1);
   }
 };
 
