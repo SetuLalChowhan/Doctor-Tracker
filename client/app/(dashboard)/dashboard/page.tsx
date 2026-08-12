@@ -1,16 +1,74 @@
-import React from "react";
+"use client";
 
-const DashboardPage = () => {
+import React from "react";
+import useDashboard from "@/api/hooks/useDashboard";
+import { CardSkeleton, ChartSkeleton } from "@/components/common/Skeleton";
+import ErrorState from "@/components/common/ErrorState";
+import MetricCards from "@/components/dashboard/analytics/MetricCards";
+import WorkloadChart from "@/components/dashboard/analytics/WorkloadChart";
+import TrendChart from "@/components/dashboard/analytics/TrendChart";
+import ConditionChart from "@/components/dashboard/analytics/ConditionChart";
+
+export default function DashboardPage() {
+  const { stats, isLoading, isError, refetch } = useDashboard();
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <ChartSkeleton />
+          <ChartSkeleton />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="Failed to load dashboard statistics"
+        message="Could not connect to the analytics endpoint. Please ensure the backend server is running."
+        onRetry={refetch}
+      />
+    );
+  }
+
+  const totalDoctors = stats?.totalDoctors || 0;
+  const totalPatients = stats?.totalPatients || 0;
+  const avgPatientsPerDoctor =
+    totalDoctors > 0 ? (totalPatients / totalDoctors).toFixed(1) : "0";
+
+  const patientsPerDoctorChartData =
+    stats?.patientsPerDoctor?.map((item) => ({
+      name: item.doctorName,
+      patients: item.patientCount,
+      specialization: item.specialization,
+    })) || [];
+
   return (
-    <div className="p-6 bg-card text-card-foreground rounded-xl shadow-sm border border-border min-h-[400px] flex flex-col justify-center items-center">
-      <h1 className="text-3xl font-extrabold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-        Dashboard Overview
-      </h1>
-      <p className="text-muted-foreground text-base text-center max-w-md">
-        Welcome to your dashboard area. The layout is fully ready and configured with Redux, QueryClient, and custom client hooks.
-      </p>
+    <div className="space-y-6">
+      {/* Metric Cards Row */}
+      <MetricCards
+        totalDoctors={totalDoctors}
+        totalPatients={totalPatients}
+        avgPatientsPerDoctor={avgPatientsPerDoctor}
+        conditionCount={stats?.conditionStats?.length || 0}
+      />
+
+      {/* Visual Analytics Charts Row */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <WorkloadChart data={patientsPerDoctorChartData} />
+        <TrendChart data={stats?.dateBasedStats || []} />
+      </div>
+
+      {/* Condition Distribution Section */}
+      <ConditionChart data={stats?.conditionStats || []} />
     </div>
   );
-};
-
-export default DashboardPage;
+}
