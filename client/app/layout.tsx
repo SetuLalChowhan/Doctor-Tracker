@@ -11,7 +11,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Doctor Tracker — Administrative Medical Management Portal",
+  title: "Doctor Tracker",
   description:
     "Secure administrative web application for doctor management, patient tracking, and data visualization analytics.",
 };
@@ -28,4 +28,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+}
